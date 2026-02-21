@@ -1,3 +1,6 @@
+====== ESCTRUCTURA SISTEMA ADQUISICIÓN IMAGENES ======
+
+
 srv/imagenes/
 ├── webcam/
 │   └── costur/
