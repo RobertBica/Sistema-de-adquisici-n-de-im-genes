@@ -1,46 +1,45 @@
 #!/bin/bash
 
-BASE="/srv/imagenes/meteorologia"
+YEAR=2026
 
-# Años que queremos crear
-YEARS=(2025 2026)
+BASE_WEBCAM="/imagenes/webcam/costur"
+BASE_SATELITE="/imagenes/meteorologia/observacion/satelite"
 
 declare -A MESES
 MESES=(
-  ["Enero"]=31
-  ["Febrero"]=28
-  ["Marzo"]=31
-  ["Abril"]=30
-  ["Mayo"]=31
-  ["Junio"]=30
-  ["Julio"]=31
-  ["Agosto"]=31
-  ["Septiembre"]=30
-  ["Octubre"]=31
-  ["Noviembre"]=30
-  ["Diciembre"]=31
+  ["01"]=31
+  ["02"]=28
+  ["03"]=31
+  ["04"]=30
+  ["05"]=31
+  ["06"]=30
+  ["07"]=31
+  ["08"]=31
+  ["09"]=30
+  ["10"]=31
+  ["11"]=30
+  ["12"]=31
 )
 
-TIPOS=("prediccion" "observacion")
+echo "Creando estructura de carpetas para el año $YEAR..."
 
-# Bucle principal por cada año
-for YEAR in "${YEARS[@]}"; do
-  echo "Creando estructura para el año $YEAR..."
+for MES in "${!MESES[@]}"; do
 
-  for TIPO in "${TIPOS[@]}"; do
-    for MES in "${!MESES[@]}"; do
-      
-      # Ajuste opcional para febrero en año bisiesto
-      DIAS=${MESES[$MES]}
-      if [[ "$MES" == "Febrero" && $((YEAR % 4 == 0 && (YEAR % 100 != 0 || YEAR % 400 == 0))) -eq 1 ]]; then
-        DIAS=29
-      fi
+  DIAS=${MESES[$MES]}
 
-      for ((DIA=1; DIA<=DIAS; DIA++)); do
-        mkdir -p "$BASE/$TIPO/$YEAR/$MES/$(printf "%02d" $DIA)"
-      done
-    done
+  # Ajuste de febrero en año bisiesto
+  if [[ "$MES" == "02" && $((YEAR % 4 == 0 && (YEAR % 100 != 0 || YEAR % 400 == 0))) -eq 1 ]]; then
+    DIAS=29
+  fi
+
+  for ((DIA=1; DIA<=DIAS; DIA++)); do
+    DIA_FMT=$(printf "%02d" $DIA)
+
+    mkdir -p "$BASE_WEBCAM/$YEAR/$MES/$DIA_FMT"
+    mkdir -p "$BASE_SATELITE/$YEAR/$MES/$DIA_FMT"
   done
 done
 
-echo "Estructura de carpetas creada correctamente para los años: ${YEARS[*]}"
+echo "Estructuras creadas correctamente:"
+echo " - $BASE_WEBCAM/$YEAR"
+echo " - $BASE_SATELITE/$YEAR"
