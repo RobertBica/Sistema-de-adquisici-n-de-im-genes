@@ -4,8 +4,6 @@
 # CONFIGURACIÓN
 # =========================
 
-export TZ=Europe/Madrid
-
 OBSERVACION_DIR="/mnt/nas_proyecto/imagenes/meteorologia/observacion/satelite"
 BASE_URL="https://www.aemet.es/imagenes_d/eltiempo/observacion/satelite"
 
@@ -17,11 +15,11 @@ ANIO=$(date +"%Y")
 MES=$(date +"%m")
 DIA=$(date +"%d")
 
-# Restamos 1 hora (AEMET suele ir retrasada)
+# Restamos 1 hora
 HORA=$(date -d "1 hour ago" +"%H")
 
 FECHA_URL="${ANIO}${MES}${DIA}${HORA}00"
-ARCHIVO="${FECHA_URL}_s38g.gif"
+ARCHIVO="${FECHA_URL}_s93g.gif"
 
 DEST_DIR="$OBSERVACION_DIR/$ANIO/$MES/$DIA"
 DESTINO="$DEST_DIR/$ARCHIVO"
@@ -41,7 +39,7 @@ fi
 
 wget -q --timeout=20 --tries=2 "$BASE_URL/$ARCHIVO" -O "$DESTINO"
 
-if [ $? -eq 0 ] && [ -s "$DESTINO" ]; then
+if [ $? -eq 0 ]; then
   echo "$(date '+%Y-%m-%d %H:%M:%S') Imagen guardada: $ARCHIVO"
 else
   echo "$(date '+%Y-%m-%d %H:%M:%S') ERROR descargando $ARCHIVO"
