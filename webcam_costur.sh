@@ -31,7 +31,7 @@ while true; do
   FECHA_HORA=$(date +"%d-%m-%Y-%H-%M")
   ARCHIVO="$UBICACION-$FECHA_HORA.jpg"
 
-  # Comprobar que la ruta existe
+  # Comprobamos que la ruta existe
   if [ -d "$DESTINO" ]; then
     curl -s "$URL_IMAGEN" -o "$DESTINO/$ARCHIVO"
     echo "$(date) Imagen guardada en $DESTINO/$ARCHIVO"
